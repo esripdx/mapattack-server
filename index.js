@@ -68,6 +68,32 @@ web.createWebServer(config.http_port, function (err, server) {
 
     if (request.url === "/ping") {
       require('./lib/routes/ping')(request, response);
+
+    } else if (request.url === "/device/register") {
+      // When a device first launches the app, it will always make a request to the register endpoint
+      // device_id=XXXXXXXXXXXXXXXXXXXX
+      require('./lib/routes/device_register')(request, response);
+
+    } else if (request.url === "/games") {
+      // device_id=XXXXXXXXXXXXXXXXXXXX
+      require('./lib/routes/games')(request, response);
+
+    } else if (request.url === "/game/join") {
+      // The device is joining an exiting game
+      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // game_id=XXXXXXXXXXXXXXXXXXXX
+      require('./lib/routes/game_join')(request, response);
+
+    } else if (request.url === "/game/create") {
+      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // board_id=XXXXXXXXXXXXXXXXXXXX
+      require('./lib/routes/game_create')(request, response);
+
+    } else if (request.url === "/game/state") {
+      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // game_id=XXXXXXXXXXXXXXXXXXXX
+      require('./lib/routes/game_state')(request, response);
+
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
       response.end("404 error");
