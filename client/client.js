@@ -4,12 +4,12 @@ var dgram   = require('dgram'),
 var port = 5309;
 var host = '127.0.0.1';
 
-var message = msgpack.pack({ lat: 45.5165, lon: -122.6764, bearing: 180, deviceID: 'abc123', accuracy: 100, timestamp: +new Date(), speed: 1 });
+var message = msgpack.pack({ lat: 45.5165, lon: -122.6764, bearing: 180, deviceID: 'abc123', accuracy: 100, timestamp: Math.floor(+new Date() / 1000), speed: 1 });
 
 var client = dgram.createSocket('udp4');
 
 client.on('message', function (message, remote) {
-  console.log("The packet came back");
+  console.log("The packet came back: " + msgpack.unpack(message));
 });
 
 

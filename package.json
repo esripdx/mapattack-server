@@ -9,6 +9,7 @@
   "author": "",
   "dependencies": {
     "msgpack": "~0.2.1",
-    "request": "~2.27.0"
+    "request": "~2.27.0",
+    "cgeohash": "~1.5.0"
   }
 }

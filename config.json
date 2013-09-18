@@ -1,4 +1,4 @@
 {
-  "upd_port": 5309,
+  "udp_port": 5309,
   "http_port": 8080
 }
