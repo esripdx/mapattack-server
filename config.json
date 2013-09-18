@@ -1,4 +1,6 @@
 {
   "udp_port": 5309,
-  "http_port": 8080
+  "http_port": 8080,
+  "location_url": "http://geotrigger.arcgis.com/location/update",
+  "access_token": "abc123"
 }

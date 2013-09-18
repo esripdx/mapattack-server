@@ -6,6 +6,7 @@ var socket = require('./lib/socket'),
 var msgpack = require('msgpack'),
     geohash = require('cgeohash');
 
+var geotriggers = require('./lib/geotriggers');
 
 
 // create the UDP socket and respond
@@ -17,6 +18,32 @@ socket.createSocket(config.udp_port, function (err, server) {
     var response = msgpack.pack(decoded.timestamp);
 
     var location = geohash.decode(decoded.location);
+
+    if (typeof response !== 'object') {
+      console.error("Invalid Packet from " + rinfo.host);
+      return;
+    }
+
+    var locationUpdate = {
+      locations: [
+        {
+          timestamp: new Date(response.timestamp * 1000),
+          latitude:  location.latitude,
+          longitude: location.longitude,
+          accuracy:  response.accuracy,
+          speed:     response.speed,
+          bearing:   response.bearing
+        }
+      ]
+    };
+
+    geotriggers.sendLocationUpdate(locationUpdate, function (err, res) {
+      if (err) {
+        console.error("ERROR: " + err);
+      } else {
+        console.log(res);
+      }
+    });
 
     console.log("server got: a message from " +
       rinfo.address + ":" + rinfo.port, decoded);
