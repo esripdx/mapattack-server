@@ -4,7 +4,7 @@ var dgram   = require('dgram'),
 
 var port = 5309;
 var host = '127.0.0.1';
-var location = geohash.encode(45.5165, -122.6764, 4);
+var location = geohash.encode(45.5165, -122.6764, 9);
 
 var message = msgpack.pack({ location: location, bearing: 180, deviceID: 'abc123', accuracy: 100, timestamp: Math.floor(+new Date() / 1000), speed: 1 });
 
