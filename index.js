@@ -72,7 +72,7 @@ web.createWebServer(config.http_port, function (err, server) {
 
       request.on('data', function (data) {
         body += data;
-        if(body.length > 800000) { // Limit requests to 800kb
+        if(body.length > 200000) { // Limit requests to 200kb
           response.writeHead(413, { "Content-Type": "application/json" });
           response.end(JSON.stringify({"error":"request_too_large"}));
         }
