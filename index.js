@@ -32,12 +32,18 @@ socket.createSocket(config.udp_port, function (err, server) {
   });
 });
 
+
 // create the HTTP server and respond
 web.createWebServer(config.http_port, function (err, server) {
   console.log("listening on TCP port " + config.http_port);
   server.on("request", function (request, response) {
     console.log("http request: " + request.url);
-    response.writeHead(404, { 'Content-Type': 'text/plain' });
-    response.end("404 error");
+
+    if (request.url === "/ping") {
+      require('./lib/routes/ping')(request, response);
+    } else {
+      response.writeHead(404, { 'Content-Type': 'text/plain' });
+      response.end("404 error");
+    }
   });
 });
