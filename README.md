@@ -1,4 +1,4 @@
-# MapAttack UDP Receiver
+# MapAttack Game Server
 
 ```
 $ npm install
