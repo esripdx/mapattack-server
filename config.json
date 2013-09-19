@@ -4,5 +4,6 @@
   "location_url": "http://geotrigger.arcgis.com/location/update",
   "access_token": "abc123",
   "redis_host": "127.0.0.1",
-  "redis_port": 6379
+  "redis_port": 6379,
+  "ago_client_id": "Px0e06WENB0n1G9Q"
 }
