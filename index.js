@@ -103,7 +103,7 @@ function processRequest(request, response) {
       // avatar=base64-encoded image
 
       // Updating an existing device
-      // access_token=hYcxHbY9tTjsDf2JmYIMZgPoIoMPrZTZB6c3uSwmHPcwcBEV
+      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // name=Your Name
       // avatar=base64-encoded image
 
@@ -111,37 +111,37 @@ function processRequest(request, response) {
 
     } else if (request.url === "/boards") {
       // COMPLETE
-      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // latitude=XXX
       // longitude=XXX
       require('./lib/routes/boards')(request, response);
 
     } else if (request.url === "/games") {
       // COMPLETE
-      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // latitude=XXX
       // longitude=XXX
       require('./lib/routes/games')(request, response);
 
     } else if (request.url === "/game/join") {
       // The device is joining an existing game
-      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // game_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_join')(request, response);
 
     } else if (request.url === "/game/create") {
-      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // board_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_create')(request, response);
 
     } else if (request.url === "/game/state") {
-      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // game_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_state')(request, response);
 
     } else if (request.url === "/game/end") {
       // The device is joining an existing game
-      // device_id=XXXXXXXXXXXXXXXXXXXX
+      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // game_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_end')(request, response);
 
