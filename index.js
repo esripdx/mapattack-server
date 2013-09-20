@@ -103,10 +103,14 @@ function processRequest(request, response) {
 
     } else if (request.url === "/boards") {
       // device_id=XXXXXXXXXXXXXXXXXXXX
+      // latitude=XXX
+      // longitude=XXX
       require('./lib/routes/boards')(request, response);
 
     } else if (request.url === "/games") {
       // device_id=XXXXXXXXXXXXXXXXXXXX
+      // latitude=XXX
+      // longitude=XXX
       require('./lib/routes/games')(request, response);
 
     } else if (request.url === "/game/join") {
