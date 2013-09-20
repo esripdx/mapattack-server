@@ -94,20 +94,30 @@ function processRequest(request, response) {
       require('./lib/routes/ping')(request, response);
 
     } else if (request.url === "/device/register") {
+      // COMPLETE
       // When the user enters their name/photo, the device registers.
       // The next time the app is open, it makes a request to register with the existing name/photo stored on the device.
-      // device_id=XXXXXXXXXXXXXXXXXXXX
+
+      // Creating a new device
       // name=Your Name
       // avatar=base64-encoded image
+
+      // Updating an existing device
+      // access_token=hYcxHbY9tTjsDf2JmYIMZgPoIoMPrZTZB6c3uSwmHPcwcBEV
+      // name=Your Name
+      // avatar=base64-encoded image
+
       require('./lib/routes/device_register')(request, response);
 
     } else if (request.url === "/boards") {
+      // COMPLETE
       // device_id=XXXXXXXXXXXXXXXXXXXX
       // latitude=XXX
       // longitude=XXX
       require('./lib/routes/boards')(request, response);
 
     } else if (request.url === "/games") {
+      // COMPLETE
       // device_id=XXXXXXXXXXXXXXXXXXXX
       // latitude=XXX
       // longitude=XXX
@@ -134,6 +144,9 @@ function processRequest(request, response) {
       // device_id=XXXXXXXXXXXXXXXXXXXX
       // game_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_end')(request, response);
+
+    } else if (request.url.match(/\/user\/(.+)\.jpg/)) {
+      // Return a user's avatar given their device_id
 
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
