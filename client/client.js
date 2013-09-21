@@ -7,7 +7,7 @@ var host = '127.0.0.1';
 var location = geohash.encode(45.5165, -122.6764, 9);
 
 var message = msgpack.pack({ 
-  access_token: 'rTBxFP0qnc1eGNtHR5WDFKsgLNrvtJPdjuBqoGMJG5mWGslT',
+  access_token: 'iElkRoDOsNUJFVn0XOgYPXSNU16lW6KdNmKZjJzAhKbMWSxr',
   location: location, 
   timestamp: Math.floor(+new Date() / 1000),
   speed: 1,
