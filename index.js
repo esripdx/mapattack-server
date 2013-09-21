@@ -6,20 +6,25 @@ var msgpack = require('msgpack'),
     geohash = require('cgeohash'),
     qs  = require('querystring');
 
-var geotriggers = require('./lib/geotriggers');
+var geotrigger = require('./lib/geotrigger-helper');
 
 
 // create the UDP socket and respond
 socket.createSocket(config.udp_port, function (err, server) {
   console.log("listening on UDP port " + config.udp_port);
   server.on("message", function (msg, rinfo) {
-    var decoded = msgpack.unpack(msg);
+    var request = msgpack.unpack(msg);
 
-    var response = msgpack.pack(decoded.timestamp);
+    console.log("Got UDP Packet");
+    console.log(request);
 
-    var location = geohash.decode(decoded.location);
+    var response = msgpack.pack(request.timestamp);
 
-    if (typeof response !== 'object') {
+    var location = geohash.decode(request.location);
+
+    if (typeof request !== 'object'
+      || typeof request.access_token !== 'string'
+    ) {
       console.error("Invalid Packet from " + rinfo.host);
       return;
     }
@@ -27,35 +32,44 @@ socket.createSocket(config.udp_port, function (err, server) {
     var locationUpdate = {
       locations: [
         {
-          timestamp: new Date(response.timestamp * 1000),
+          timestamp: new Date(request.timestamp * 1000),
           latitude:  location.latitude,
           longitude: location.longitude,
-          accuracy:  response.accuracy,
-          speed:     response.speed,
-          bearing:   response.bearing
+          accuracy:  request.accuracy,
+          speed:     request.speed,
+          bearing:   request.bearing
         }
       ]
     };
 
-    geotriggers.sendLocationUpdate(locationUpdate, function (err, res) {
-      if (err) {
-        console.error("ERROR: " + err);
-      } else {
-        console.log(res);
-      }
-    });
+    geotrigger.new_session(request.access_token, response, function(session){
+      try {
+        // TODO Store the UDP address/port in redis for this access token
+        
+        session.send_location_update(locationUpdate, function (err, res) {
+          if (err) {
+            console.error("ERROR: " + err);
+          } else {
+            console.log(res);
+          }
+        });
 
-    console.log("server got: a message from " +
-      rinfo.address + ":" + rinfo.port, decoded);
-    console.log(location);
-
-    server.send(response, 0, response.length, rinfo.port, rinfo.host, function (err, data) {
-      if (err) {
-        console.error("ERROR: " + err);
-      } else {
-        console.log("acknowledgement sent");
+        console.log("server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + location.latitude + "," + location.longitude + "]");
+        /*
+        server.send(response, 0, response.length, rinfo.port, rinfo.host, function (err, data) {
+          if (err) {
+            console.error("ERROR: " + err);
+          } else {
+            console.log("acknowledgement sent");
+          }
+        });
+        */
+      } catch(e) {
+        console.log("Error");
+        console.log(e);
       }
-    });
+    });    
+
   });
 });
 
