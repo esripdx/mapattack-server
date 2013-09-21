@@ -44,8 +44,22 @@ socket.createSocket(config.udp_port, function (err, server) {
 
     geotrigger.new_session(request.access_token, response, function(session){
       try {
-        // TODO Store the UDP address/port in redis for this access token
-        
+        console.log("server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + location.latitude + "," + location.longitude + "]");
+
+        // TODO: Update the UDP address/port in redis for this user
+        session.set_udp_info(rinfo.address, rinfo.port);
+
+        // Publish this user's location data to the redis channel for the game ID
+        session.publish_location({
+          device_id: session.device_id,
+          location: request.location,
+          timestamp: request.timestamp,
+          speed: request.speed,
+          bearing: request.bearing,
+          accuracy: request.accuracy
+        });
+
+        // Send location update to the Geotrigger API
         session.send_location_update(locationUpdate, function (err, res) {
           if (err) {
             console.error("ERROR: " + err);
@@ -54,7 +68,6 @@ socket.createSocket(config.udp_port, function (err, server) {
           }
         });
 
-        console.log("server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + location.latitude + "," + location.longitude + "]");
         /*
         server.send(response, 0, response.length, rinfo.port, rinfo.host, function (err, data) {
           if (err) {
