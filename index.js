@@ -192,7 +192,13 @@ function processRequest(request, response) {
 
       require('./lib/routes/device_register')(request, response);
 
+    } else if (request.url === "/device/register_apns") {
+      // Update the push notification tokens for the device.
+      require('./lib/routes/device_register_apns')(request, response);
+
     } else if (request.url === "/device") {
+      // COMPLETE
+      // Returns the device ID given an access token. For debugging purposes.
       require('./lib/routes/device')(request, response);
 
     } else if (request.url === "/boards") {
