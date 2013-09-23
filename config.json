@@ -10,6 +10,7 @@
     "auth": true,
     "locations": true,
     "game": true,
-    "udp": true
+    "udp": true,
+    "board": true
   }
 }

@@ -208,13 +208,15 @@ function processRequest(request, response) {
       // longitude=XXX
       require('./lib/routes/boards')(request, response);
 
+    /*
     } else if (request.url === "/games") {
       // COMPLETE
       // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
       // latitude=XXX
       // longitude=XXX
       require('./lib/routes/games')(request, response);
-
+    */
+    
     } else if (request.url === "/game/create") {
       // COMPLETE
       // Create a game given an existing board
