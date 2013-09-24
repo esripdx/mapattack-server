@@ -60,6 +60,7 @@ Response:
 * bbox - [x,y,x,y]
 * game:
  * game_id
+ * is_active - true, false
  * red_team - number of people on the red team
  * blue_team
  * red_score - total score for the red team
