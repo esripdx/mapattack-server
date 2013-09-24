@@ -17,16 +17,23 @@ $ node index.js
 When the user enters their name/photo, the device registers.
 The next time the app is open, it makes a request to register with the existing name/photo stored on the device.
 
-Creating a new device
+Creating a new device:
 
 * name=Your Name
 * avatar=base64-encoded image
 
-Updating an existing device
+Updating an existing device:
 
 * access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 * name=Your Name
 * avatar=base64-encoded image
+
+Response:
+
+* device_id
+* access_token
+
+Whatever device_id and access_token are returned by the register route should replace the values currently stored on the phone if any.
 
 
 ### device/register_push
@@ -44,6 +51,19 @@ Update the push notification tokens for the device.
 * access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 * latitude=XXX
 * longitude=XXX
+
+Response:
+
+* board_id
+* name
+* distance - meters
+* bbox - [x,y,x,y]
+* game:
+** game_id
+** red_team - number of people on the red team
+** blue_team
+** red_score - total score for the red team
+** blue_score - total score for the blue team
 
 
 ### game/create
@@ -108,15 +128,9 @@ The creator of the game ends the game. This de-activates all the triggers, and r
 * game_id=XXXXXXXXXXXXXXXXXXXX
 
 
+### user/:id.jpg
 
-
-
-
-* name
-* game ID
-* players on red/blue teams
-* distance
-* geo data (center and distance)
+Return a user's avatar as a JPG image.
 
 
 ## UDP Messages
