@@ -178,68 +178,32 @@ function processRequest(request, response) {
 
     } else if (request.url === "/device/register") {
       // COMPLETE
-      // When the user enters their name/photo, the device registers.
-      // The next time the app is open, it makes a request to register with the existing name/photo stored on the device.
-
-      // Creating a new device
-      // name=Your Name
-      // avatar=base64-encoded image
-
-      // Updating an existing device
-      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      // name=Your Name
-      // avatar=base64-encoded image
-
       require('./lib/routes/device_register')(request, response);
 
     } else if (request.url === "/device/register_apns") {
-      // Update the push notification tokens for the device.
       require('./lib/routes/device_register_apns')(request, response);
 
-    } else if (request.url === "/device") {
+    } else if (request.url === "/device/info") {
       // COMPLETE
       // Returns the device ID given an access token. For debugging purposes.
       require('./lib/routes/device')(request, response);
 
-    } else if (request.url === "/boards") {
-      // COMPLETE
-      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      // latitude=XXX
-      // longitude=XXX
+    } else if (request.url === "/boards" or request.url === "/board/list") {
       require('./lib/routes/boards')(request, response);
 
-    /*
-    } else if (request.url === "/games") {
-      // COMPLETE
-      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      // latitude=XXX
-      // longitude=XXX
-      require('./lib/routes/games')(request, response);
-    */
-    
     } else if (request.url === "/game/create") {
-      // COMPLETE
-      // Create a game given an existing board
-      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      // board_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_create')(request, response);
 
+    } else if (request.url === "/game/start") {
+      require('./lib/routes/game_start')(request, response);
+
     } else if (request.url === "/game/join") {
-      // COMPLETE
-      // The device is joining an existing game
-      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      // game_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_join')(request, response);
 
     } else if (request.url === "/game/state") {
-      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      // game_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_state')(request, response);
 
     } else if (request.url === "/game/end") {
-      // The device is joining an existing game
-      // access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-      // game_id=XXXXXXXXXXXXXXXXXXXX
       require('./lib/routes/game_end')(request, response);
 
     } else if (request.url.match(/\/user\/(.+)\.jpg/)) {
