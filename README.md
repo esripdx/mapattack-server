@@ -59,11 +59,11 @@ Response:
 * distance - meters
 * bbox - [x,y,x,y]
 * game:
-** game_id
-** red_team - number of people on the red team
-** blue_team
-** red_score - total score for the red team
-** blue_score - total score for the blue team
+ * game_id
+ * red_team - number of people on the red team
+ * blue_team
+ * red_score - total score for the red team
+ * blue_score - total score for the blue team
 
 
 ### game/create
