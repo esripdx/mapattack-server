@@ -264,4 +264,3 @@ Scores of each device
 Total score for red team:
 * HVALS game:XXXXXX:red => list of numbers
 
-
