@@ -207,7 +207,7 @@ Tags:
 
 * board - indicates that this trigger is a board, used to search for "board" triggers
 * board:XXXXXX - specifies the board_id of this trigger
-* board:username:XXXXXX - the Twitter username of the person who created the board, for access control
+* board:twitter_id:XXXXXX - the Twitter ID of the person who created the board, for access control
 * game:XXXXXX - when a game is started from a board, this specifies the game_id of the active game
 
 ### Coin Triggers
@@ -224,6 +224,12 @@ Properties:
 
 * value: 10 (10, 20, 50)
 * team: red (red, blue, [none])
+
+### Devices
+
+A player is active in a game when their device has a tag like the following
+
+* coin:game:XXXXXX
 
 
 ## Redis Schema
