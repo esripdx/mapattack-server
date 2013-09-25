@@ -7,6 +7,12 @@ $ node index.js
 
 ## Boards and Games
 
+### Creating a Board
+
+
+* Start creating triggers and tag them with the format board:id
+* To "save" the board, run
+
 
 
 
@@ -44,6 +50,19 @@ Update the push notification tokens for the device.
 * gcm_token=XXXXX
 * or
 * apns_token=XXXXX
+
+
+### board/new
+
+Generates a new board_id
+
+* access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+Response:
+
+* board_id: XXXXXXXX
+
+Note that this doesn't actually make any API requests or do anything other than generate an ID for you.
 
 
 ### board/list

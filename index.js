@@ -188,8 +188,11 @@ function processRequest(request, response) {
       // Returns the device ID given an access token. For debugging purposes.
       require('./lib/routes/device')(request, response);
 
-    } else if (request.url === "/boards" or request.url === "/board/list") {
+    } else if (request.url === "/board/list" || request.url === "/boards") {
       require('./lib/routes/boards')(request, response);
+
+    } else if (request.url === "/board/new") {
+      require('./lib/routes/board_new')(request, response);
 
     } else if (request.url === "/game/create") {
       require('./lib/routes/game_create')(request, response);
@@ -208,6 +211,7 @@ function processRequest(request, response) {
 
     } else if (request.url.match(/\/user\/(.+)\.jpg/)) {
       // Return a user's avatar given their device_id
+
 
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
