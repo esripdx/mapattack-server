@@ -192,9 +192,11 @@ function processRequest(request, response) {
       require('./lib/routes/boards')(request, response);
 
     } else if (request.url === "/board/new") {
+      // COMPLETE
       require('./lib/routes/board_new')(request, response);
 
     } else if (request.url === "/game/create") {
+      // COMPLETE
       require('./lib/routes/game_create')(request, response);
 
     } else if (request.url === "/game/start") {
@@ -211,7 +213,6 @@ function processRequest(request, response) {
 
     } else if (request.url.match(/\/user\/(.+)\.jpg/)) {
       // Return a user's avatar given their device_id
-
 
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
