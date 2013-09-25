@@ -1,0 +1,38 @@
+DEPLOY_DIR="/home/ubuntu/mapattack-server/$(/bin/date +%s)"
+CURRENT_SYMLINK=/home/ubuntu/mapattack-server/current
+REPO=/home/ubuntu/mapattack-server.git
+SERVICE_NAME=mapattack
+
+echo "checkout master"
+GIT_WORK_TREE=$REPO /usr/bin/git checkout -f master
+
+# sanity check
+if [ -d "$DEPLOY_DIR" ]; then
+    echo "Deploy dir already exists!"
+    exit 1
+fi
+
+# create deploy directory, copy files, and build the go app
+echo "cloning to deploy dir"
+/usr/bin/git clone $REPO $DEPLOY_DIR
+
+cd $DEPLOY_DIR
+/usr/local/bin/npm install
+
+# stop the currently running instance
+echo "stopping service"
+/usr/bin/sudo /usr/sbin/service $SERVICE_NAME stop
+
+# remove the current symlink if it exists
+if [ -h "$CURRENT_SYMLINK" ]; then
+    echo "remove symlink"
+    /bin/rm $CURRENT_SYMLINK
+fi
+
+# create the current symlink
+echo "create symlink"
+/bin/ln -s $DEPLOY_DIR $CURRENT_SYMLINK
+
+# start the app
+echo "starting service"
+/usr/bin/sudo /usr/sbin/service $SERVICE_NAME start
