@@ -100,6 +100,7 @@ Response:
  * name - The title or "Untitled Board"
  * bbox - [x,y,x,y]
 * coins - Array
+ * coin_id
  * latitude
  * longitude
  * value
