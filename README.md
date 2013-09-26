@@ -49,7 +49,8 @@ Update the push notification tokens for the device.
 * access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 * gcm_token=XXXXX
 * or
-* apns_token=XXXXX
+* apns_prod_token=XXXXX
+* apns_sandbox_token=XXXXX
 
 
 ### board/new
