@@ -180,8 +180,8 @@ function processRequest(request, response) {
       // COMPLETE
       require('./lib/routes/device_register')(request, response);
 
-    } else if (request.url === "/device/register_apns") {
-      require('./lib/routes/device_register_apns')(request, response);
+    } else if (request.url === "/device/register_push") {
+      require('./lib/routes/device_register_push')(request, response);
 
     } else if (request.url === "/device/info") {
       // COMPLETE
