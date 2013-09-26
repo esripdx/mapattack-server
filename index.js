@@ -181,6 +181,7 @@ function processRequest(request, response) {
       require('./lib/routes/device_register')(request, response);
 
     } else if (request.url === "/device/register_push") {
+      // COMPLETE
       require('./lib/routes/device_register_push')(request, response);
 
     } else if (request.url === "/device/info") {

@@ -47,8 +47,9 @@ Whatever device_id and access_token are returned by the register route should re
 Update the push notification tokens for the device.
 
 * access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-* gcm_token=XXXXX
-* or
+
+And one of:
+* gcm_registration_id=XXXXX
 * apns_prod_token=XXXXX
 * apns_sandbox_token=XXXXX
 
