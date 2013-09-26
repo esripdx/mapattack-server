@@ -10,6 +10,7 @@
     "locations": true,
     "game": true,
     "udp": true,
-    "board": true
+    "board": true,
+    "device": true
   }
 }
