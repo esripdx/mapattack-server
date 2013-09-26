@@ -88,6 +88,22 @@ Response:
  * blue_score - total score for the blue team
 
 
+### board/state
+
+* access_token=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+* board_id
+
+Response:
+
+* board
+ * board_id
+ * name - The title or "Untitled Board"
+ * bbox - [x,y,x,y]
+* coins - Array
+ * latitude
+ * longitude
+ * value
+
 ### game/create
 Create a game given an existing board
 
