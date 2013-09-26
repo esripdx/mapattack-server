@@ -197,6 +197,7 @@ function processRequest(request, response) {
       require('./lib/routes/board_new')(request, response);
 
     } else if (request.url === "/board/state") {
+      // COMPLETE
       require('./lib/routes/board_state')(request, response);
 
     } else if (request.url === "/game/create") {
@@ -215,8 +216,9 @@ function processRequest(request, response) {
     } else if (request.url === "/game/end") {
       require('./lib/routes/game_end')(request, response);
 
-    } else if (request.url.match(/\/user\/(.+)\.jpg/)) {
+    } else if (match=request.url.match(/\/user\/(.+)\.jpg/)) {
       // Return a user's avatar given their device_id
+      require('./lib/routes/device_avatar')(match[1], request, response);
 
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
