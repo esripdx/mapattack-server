@@ -195,7 +195,7 @@ Documenting all the UDP messages that are sent and received.
 * bearing - Int
 * accuracy - Int, meters
 
-## Tag Usage
+## Geotrigger API Usage
 
 Documenting the usage of tags in the Geotrigger API.
 
@@ -209,6 +209,10 @@ Tags:
 * board:XXXXXX - specifies the board_id of this trigger
 * board:twitter_id:XXXXXX - the Twitter ID of the person who created the board, for access control
 * game:XXXXXX - when a game is started from a board, this specifies the game_id of the active game
+
+Properties:
+
+* title
 
 ### Coin Triggers
 
