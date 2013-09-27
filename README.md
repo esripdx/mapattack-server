@@ -216,7 +216,7 @@ Documenting all the UDP messages that are sent and received.
 
 ## Geotrigger API Usage
 
-Documenting the usage of tags in the Geotrigger API.
+Documenting the usage of the Geotrigger API.
 
 ### Board Triggers
 
@@ -227,7 +227,6 @@ Tags:
 * board - indicates that this trigger is a board, used to search for "board" triggers
 * board:XXXXXX - specifies the board_id of this trigger
 * board:twitter_id:XXXXXX - the Twitter ID of the person who created the board, for access control
-* game:XXXXXX - when a game is started from a board, this specifies the game_id of the active game
 
 Properties:
 
@@ -241,7 +240,7 @@ Tags:
 
 * coin - indicates that this trigger is a coin 
 * coin:board:XXXXXX - the board_id this coin belongs to
-* coin:game:XXXXXX - the game_id this coin belongs to (activates this trigger for the game)
+* game:XXXXXX - the game_id this coin belongs to (activates this trigger for the game)
 
 Properties:
 
@@ -252,7 +251,7 @@ Properties:
 
 A player is active in a game when their device has a tag like the following
 
-* coin:game:XXXXXX
+* game:XXXXXX
 
 
 ## Redis Schema
@@ -262,10 +261,10 @@ Documenting all the keys used in Redis.
 ### Devices
 
 Profile data:
-* Key: device:profile:XXXXXX => hash
+* Key: device:profile:XXXXXX => JSON object
 
 AGO access tokens:
-* Key: device:tokens:XXXXXX => Hash
+* Key: device:tokens:XXXXXX => JSON object
 
 Active game for the device:
 * Key: device:active_game:XXXXXX => game_id
@@ -273,17 +272,31 @@ Active game for the device:
 Team of the device:
 * Key: device:team:XXXXXX => red
 
+Last location of each device
+* Value: device:location:XXXXXX => JSON object
+
 
 ### Games
 
-List of members of each team of a game:
+Set of members of each team of a game:
 * Set: game:XXXXXX:red => device_ids
 * Set: game:XXXXXX:blue => device_ids
 
 Scores of each device
 * Hash: game:XXXXXX:red device:XXXXXX => Number
 * Hash: game:XXXXXX:blue device:XXXXXX => Number
+* HINCRBY game:XXXXXX:red device:XXXXXX 1
+
+Which team has claimed a coin
+* Hash game:XXXXXX coin:XXXXXX => red/blue
 
 Total score for red team:
 * HVALS game:XXXXXX:red => list of numbers
+
+Active game for the board
+* Value: board:XXXXXX:game => game_id
+
+Get the board for a game
+* Value: game:XXXXXX:board => board_id
+
 
