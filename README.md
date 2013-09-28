@@ -285,7 +285,7 @@ Scores of each device
 * HINCRBY game:XXXXXX:red device:XXXXXX 1
 
 Which team has claimed a coin
-* Hash game:XXXXXX coin:XXXXXX => red/blue
+* Hash game:XXXXXX:coins XXXXXX => red/blue
 
 Total score for red team:
 * HVALS game:XXXXXX:red => list of numbers
