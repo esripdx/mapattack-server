@@ -218,6 +218,9 @@ function processRequest(request, response) {
     } else if (request.url === "/game/end") {
       require('./lib/routes/game_end')(request, response);
 
+    } else if (request.url === "/trigger/callback") {
+      require('./lib/routes/trigger_callback')(request, response);
+
     } else if (match=request.url.match(/\/user\/(.+)\.jpg/)) {
       // Return a user's avatar given their device_id
       require('./lib/routes/device_avatar')(match[1], request, response);
