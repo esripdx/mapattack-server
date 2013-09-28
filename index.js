@@ -65,101 +65,105 @@ function start_game_listener(game_id, udp_server) {
 socket.createSocket(config.udp_port, function (err, server) {
   console.log("listening on UDP port " + config.udp_port);
   server.on("message", function (msg, rinfo) {
-    var request = msgpack.unpack(msg);
+    try {
+      var request = msgpack.unpack(msg);
 
-    console.log("Got UDP Packet");
-    console.log(request);
+      console.log("Got UDP Packet");
+      console.log(request);
 
-    var response = msgpack.pack(request.timestamp);
+      var response = msgpack.pack(request.timestamp);
 
-    var location = geohash.decode(request.location);
+      var location = geohash.decode(request.location);
 
-    if (typeof request !== 'object'
-      || typeof request.access_token !== 'string'
-    ) {
-      console.error("Invalid Packet from " + rinfo.host);
-      return;
-    }
-
-    var locationUpdate = {
-      locations: [
-        {
-          timestamp: new Date(request.timestamp * 1000),
-          latitude:  location.latitude,
-          longitude: location.longitude,
-          accuracy:  request.accuracy,
-          speed:     request.speed,
-          bearing:   request.bearing
-        }
-      ]
-    };
-
-    geotrigger.new_session(request.access_token, response, function(session){
-      try {
-        console.log("server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + location.latitude + "," + location.longitude + "]");
-
-        // Update the UDP address/port in redis for this user
-        session.set_udp_info(rinfo.address, rinfo.port);
-
-        // Store the location of the player in redis
-        session.redis.device.set_location(session.device_id, {
-          latitude: location.latitude,
-          longitude: location.longitude,
-          timestamp: request.timestamp,
-          speed: request.speed,
-          bearing: request.bearing,
-          accuracy: request.accuracy
-        }, function(err,data){});
-
-        // Find the active game_id for the user
-        session.redis.device.get_active_game(session.device_id, function(err, game){
-          if(err) {
-            console.log("Couldn't find active game for device: " + device_id);
-          } else {
-
-            // Make sure there is already a Redis listener active for this game, and if not, start one
-            if(redis_pool[game.game_id]) {
-
-            } else {
-              redis_pool[game.game_id] = start_game_listener(game.game_id, server);
-            }
-
-            // Publish this user's location data to the redis channel for the game ID
-            session.redis.publish_location(session.device_id, game.game_id, {
-              location: request.location,
-              timestamp: request.timestamp,
-              speed: request.speed,
-              bearing: request.bearing,
-              accuracy: request.accuracy
-            });
-
-          }
-        });
-
-        // Send location update to the Geotrigger API
-        session.send_location_update(locationUpdate, function (err, res) {
-          if (err) {
-            console.error("ERROR: " + err);
-          } else {
-            console.log(res);
-          }
-        });
-
-        /*
-        server.send(response, 0, response.length, rinfo.port, rinfo.host, function (err, data) {
-          if (err) {
-            console.error("ERROR: " + err);
-          } else {
-            console.log("acknowledgement sent");
-          }
-        });
-        */
-      } catch(e) {
-        console.log("Error");
-        console.log(e);
+      if (typeof request !== 'object'
+        || typeof request.access_token !== 'string'
+      ) {
+        console.error("Invalid Packet from " + rinfo.host);
+        return;
       }
-    });    
 
+      var locationUpdate = {
+        locations: [
+          {
+            timestamp: new Date(request.timestamp * 1000),
+            latitude:  location.latitude,
+            longitude: location.longitude,
+            accuracy:  request.accuracy,
+            speed:     request.speed,
+            bearing:   request.bearing
+          }
+        ]
+      };
+
+      geotrigger.new_session(request.access_token, response, function(session){
+        try {
+          console.log("server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + location.latitude + "," + location.longitude + "]");
+
+          // Update the UDP address/port in redis for this user
+          session.set_udp_info(rinfo.address, rinfo.port);
+
+          // Store the location of the player in redis
+          session.redis.device.set_location(session.device_id, {
+            latitude: location.latitude,
+            longitude: location.longitude,
+            timestamp: request.timestamp,
+            speed: request.speed,
+            bearing: request.bearing,
+            accuracy: request.accuracy
+          }, function(err,data){});
+
+          // Find the active game_id for the user
+          session.redis.device.get_active_game(session.device_id, function(err, game){
+            if(err) {
+              console.log("Couldn't find active game for device: " + device_id);
+            } else {
+
+              // Make sure there is already a Redis listener active for this game, and if not, start one
+              if(redis_pool[game.game_id]) {
+
+              } else {
+                redis_pool[game.game_id] = start_game_listener(game.game_id, server);
+              }
+
+              // Publish this user's location data to the redis channel for the game ID
+              session.redis.publish_location(session.device_id, game.game_id, {
+                location: request.location,
+                timestamp: request.timestamp,
+                speed: request.speed,
+                bearing: request.bearing,
+                accuracy: request.accuracy
+              });
+
+            }
+          });
+
+          // Send location update to the Geotrigger API
+          session.send_location_update(locationUpdate, function (err, res) {
+            if (err) {
+              console.error("ERROR: " + err);
+            } else {
+              console.log(res);
+            }
+          });
+
+          /*
+          server.send(response, 0, response.length, rinfo.port, rinfo.host, function (err, data) {
+            if (err) {
+              console.error("ERROR: " + err);
+            } else {
+              console.log("acknowledgement sent");
+            }
+          });
+          */
+        } catch(e) {
+          console.log("Error");
+          console.log(e);
+        }
+      });    
+    } catch(e) {
+      console.log("Exception");
+      console.log(e);
+    }
   });
 });
 
