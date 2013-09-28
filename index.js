@@ -101,7 +101,15 @@ socket.createSocket(config.udp_port, function (err, server) {
         // Update the UDP address/port in redis for this user
         session.set_udp_info(rinfo.address, rinfo.port);
 
-
+        // Store the location of the player in redis
+        session.redis.device.set_location(session.device_id, {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          timestamp: request.timestamp,
+          speed: request.speed,
+          bearing: request.bearing,
+          accuracy: request.accuracy
+        }, function(err,data){});
 
         // Find the active game_id for the user
         session.redis.device.get_active_game(session.device_id, function(err, game){
