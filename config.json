@@ -5,6 +5,7 @@
   "redis_port": 6379,
   "ago_client_id": "Px0e06WENB0n1G9Q",
   "ago_client_secret": "eac52347bca444dca9fd12020132a9d8",
+  "callback_url": "http://api.mapattack.org/trigger/callback",
   "debug": {
     "auth": true,
     "locations": true,

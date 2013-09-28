@@ -297,3 +297,20 @@ Get the board for a game
 * Value: game:XXXXXX:board => board_id
 
 
+## Testing
+
+`curly http://api.mapattack.org/device/register`
+
+returns an access token
+
+`curly http://api.mapattack.org/board/list -d latitude=45.5165 -d longitude=-122.6764 -d access_token=XX`
+
+returns a list of boards
+
+`curly http://api.mapattack.org/game/create -d access_token=XX -d board_id=x`
+
+returns a game_id
+
+`curly http://api.mapattack.org/game/start -d access_token=XX -d game_id=x`
+
+
