@@ -198,15 +198,12 @@ function processRequest(request, response) {
       require('./lib/routes/ping')(request, response);
 
     } else if (request.url === "/device/register") {
-      // COMPLETE
       require('./lib/routes/device_register')(request, response);
 
     } else if (request.url === "/device/register_push") {
-      // COMPLETE
       require('./lib/routes/device_register_push')(request, response);
 
     } else if (request.url === "/device/info") {
-      // COMPLETE
       // Returns the device ID given an access token. For debugging purposes.
       require('./lib/routes/device')(request, response);
 
@@ -214,15 +211,12 @@ function processRequest(request, response) {
       require('./lib/routes/boards')(request, response);
 
     } else if (request.url === "/board/new") {
-      // COMPLETE
       require('./lib/routes/board_new')(request, response);
 
     } else if (request.url === "/board/state") {
-      // COMPLETE
       require('./lib/routes/board_state')(request, response);
 
     } else if (request.url === "/game/create") {
-      // COMPLETE
       require('./lib/routes/game_create')(request, response);
 
     } else if (request.url === "/game/start") {
