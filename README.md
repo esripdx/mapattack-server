@@ -276,8 +276,8 @@ Last location of each device
 ### Games
 
 Set of members of each team of a game:
-* Set: game:XXXXXX:red => device_ids
-* Set: game:XXXXXX:blue => device_ids
+* Set: game:XXXXXX:red:members => device_ids
+* Set: game:XXXXXX:blue:members => device_ids
 
 Scores of each device
 * Hash: game:XXXXXX:red device:XXXXXX => Number
