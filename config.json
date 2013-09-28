@@ -11,6 +11,7 @@
     "game": true,
     "udp": true,
     "board": true,
-    "device": true
+    "device": true,
+    "trigger": true
   }
 }
