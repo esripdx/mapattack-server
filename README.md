@@ -267,10 +267,7 @@ AGO access tokens:
 * Key: device:tokens:XXXXXX => JSON object
 
 Active game for the device:
-* Key: device:active_game:XXXXXX => game_id
-
-Team of the device:
-* Key: device:team:XXXXXX => red
+* Key: device:active_game:XXXXXX => {game_id: "XXXX", team: "red"}
 
 Last location of each device
 * Value: device:location:XXXXXX => JSON object
