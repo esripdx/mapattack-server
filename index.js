@@ -41,7 +41,7 @@ function start_game_listener(game_id, udp_server) {
         players.forEach(function(device_id){
           // Look up the UDP info for each player and send the payload to them
           redis.device.get_udp_info(device_id, function(err, udp_info){
-            if(err){
+            if(err || udp_info == null){
             } else {
               udp_server.send(response, 0, response.length, udp_info.port, udp_info.address, function (err, data) {
                 if (err) {
@@ -71,8 +71,6 @@ socket.createSocket(config.udp_port, function (err, server) {
       console.log("Got UDP Packet");
       console.log(request);
 
-      var response = msgpack.pack(request.timestamp);
-
       var location = geohash.decode(request.location);
 
       if (typeof request !== 'object'
@@ -85,17 +83,17 @@ socket.createSocket(config.udp_port, function (err, server) {
       var locationUpdate = {
         locations: [
           {
-            timestamp: new Date(request.timestamp * 1000),
-            latitude:  location.latitude,
-            longitude: location.longitude,
-            accuracy:  request.accuracy,
-            speed:     request.speed,
-            bearing:   request.bearing
+            timestamp: new Date(parseInt(request.timestamp) * 1000),
+            latitude:  parseFloat(location.latitude),
+            longitude: parseFloat(location.longitude),
+            accuracy:  parseInt(request.accuracy),
+            speed:     parseInt(request.speed),
+            bearing:   parseInt(request.bearing)
           }
         ]
       };
 
-      geotrigger.new_session(request.access_token, response, function(session){
+      geotrigger.new_session(request.access_token, null, function(session){
         try {
           console.log("server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + location.latitude + "," + location.longitude + "]");
 
@@ -104,12 +102,12 @@ socket.createSocket(config.udp_port, function (err, server) {
 
           // Store the location of the player in redis
           session.redis.device.set_location(session.device_id, {
-            latitude: location.latitude,
-            longitude: location.longitude,
-            timestamp: request.timestamp,
-            speed: request.speed,
-            bearing: request.bearing,
-            accuracy: request.accuracy
+            latitude: parseFloat(location.latitude),
+            longitude: parseFloat(location.longitude),
+            timestamp: parseInt(request.timestamp),
+            speed: parseInt(request.speed),
+            bearing: parseInt(request.bearing),
+            accuracy: parseInt(request.accuracy)
           }, function(err,data){});
 
           // Find the active game_id for the user
@@ -128,10 +126,10 @@ socket.createSocket(config.udp_port, function (err, server) {
               // Publish this user's location data to the redis channel for the game ID
               session.redis.publish_location(session.device_id, game.game_id, {
                 location: request.location,
-                timestamp: request.timestamp,
-                speed: request.speed,
-                bearing: request.bearing,
-                accuracy: request.accuracy
+                timestamp: parseInt(request.timestamp),
+                speed: parseInt(request.speed),
+                bearing: parseInt(request.bearing),
+                accuracy: parseInt(request.accuracy)
               });
 
             }
