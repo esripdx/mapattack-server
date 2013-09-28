@@ -22,6 +22,8 @@ function start_game_listener(game_id, udp_server) {
     redis_sub.on("message", function(channel, message){
       console.log("game:"+game_id, message);
       // Find all active players of this game
+
+      // TODO: Get both sets game:XX:red and game:XX:blue
       redis.smembers("game:players:"+game_id, function(err, players){
         console.log("Active Players");
         console.log(players);
