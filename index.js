@@ -15,16 +15,16 @@ var redis_pool = {};
 
 
 function start_game_listener(game_id, udp_server) {
-  console.log("Starting new game listener for game:"+game_id);
+  debug('udp', "Starting new game listener for game:"+game_id);
   var redis_sub = Redis.createClient(config.redis_port, config.redis_host);
   redis_sub.subscribe("game:"+game_id, function(err,data){
     redis_sub.on("message", function(channel, message){
-      console.log("game:"+game_id, message);
+      debug('udp', "game:"+game_id, message);
       // Find all active players of this game
 
       redis.game.get_players(game_id, function(err, teams){
-        console.log("Active Players");
-        console.log(teams);
+        debug('udp', "Active Players");
+        debug('udp', teams);
 
         var players = [];
         teams.red.forEach(function(p){
@@ -59,7 +59,7 @@ function start_game_listener(game_id, udp_server) {
 
 // create the UDP socket and respond
 socket.createSocket(config.udp_port, function (err, server) {
-  console.log("listening on UDP port " + config.udp_port);
+  debug('udp', "listening on UDP port " + config.udp_port);
   server.on("message", function (msg, rinfo) {
     try {
       var request;
@@ -242,7 +242,7 @@ function processRequest(request, response) {
 
     } else if (match=request.url.match(/\/(user|avatar)\/(.+)\.jpg/)) {
       // Return a user's avatar given their device_id
-      require('./lib/routes/device_avatar')(match[1], request, response);
+      require('./lib/routes/device_avatar')(match[2], request, response);
 
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
