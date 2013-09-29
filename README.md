@@ -7,14 +7,6 @@ $ node index.js
 
 ## Boards and Games
 
-### Creating a Board
-
-
-* Start creating triggers and tag them with the format board:id
-* To "save" the board, run
-
-
-
 
 ## HTTP API
 
