@@ -7,12 +7,12 @@
   "ago_client_secret": "eac52347bca444dca9fd12020132a9d8",
   "callback_url": "http://api.mapattack.org/trigger/callback",
   "debug": {
-    "auth": true,
-    "locations": true,
-    "game": true,
-    "udp": true,
-    "board": true,
-    "device": true,
+    "auth": false,
+    "locations": false,
+    "game": false,
+    "udp": false,
+    "board": false,
+    "device": false,
     "trigger": true
   }
 }
