@@ -62,15 +62,21 @@ socket.createSocket(config.udp_port, function (err, server) {
   console.log("listening on UDP port " + config.udp_port);
   server.on("message", function (msg, rinfo) {
     try {
-      var request = JSON.parse(msg);
+      var request;
+      try {
+        request = JSON.parse(msg);
+      } catch(e) {
+        debug('udp', ""+msg);
+        throw "Error parsing JSON!";
+      }
 
-      console.log("Got UDP Packet");
-      console.log(request);
+      debug('udp', "Got UDP Packet");
+      debug('udp', request);
 
       if (typeof request !== 'object'
         || typeof request.access_token !== 'string'
       ) {
-        console.error("Invalid Packet from " + rinfo.host);
+        debug('udp', "Invalid Packet from " + rinfo.host);
         return;
       }
 
@@ -89,7 +95,7 @@ socket.createSocket(config.udp_port, function (err, server) {
 
       geotrigger.new_session(request.access_token, null, function(session){
         try {
-          console.log("server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + request.latitude + "," + request.longitude + "]");
+          debug('udp', "server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + request.latitude + "," + request.longitude + "]");
 
           // Update the UDP address/port in redis for this user
           session.set_udp_info(rinfo.address, rinfo.port);
@@ -107,7 +113,7 @@ socket.createSocket(config.udp_port, function (err, server) {
           // Find the active game_id for the user
           session.redis.device.get_active_game(session.device_id, function(err, game){
             if(err) {
-              console.log("Couldn't find active game for device: " + device_id);
+              debug('udp', "Couldn't find active game for device: " + device_id);
             } else {
 
               // Make sure there is already a Redis listener active for this game, and if not, start one
@@ -133,9 +139,9 @@ socket.createSocket(config.udp_port, function (err, server) {
           // Send location update to the Geotrigger API
           session.send_location_update(locationUpdate, function (err, res) {
             if (err) {
-              console.error("ERROR: " + err);
+              debug('udp', "ERROR: " + err);
             } else {
-              console.log(res);
+              debug('udp', res);
             }
           });
 
@@ -149,13 +155,13 @@ socket.createSocket(config.udp_port, function (err, server) {
           });
           */
         } catch(e) {
-          console.log("Error");
-          console.log(e);
+          debug('udp', "Error");
+          debug('udp', e);
         }
       });    
     } catch(e) {
-      console.log("Exception");
-      console.log(e);
+      debug('udp', "Exception");
+      debug('udp', e);
     }
   });
 });
