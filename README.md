@@ -174,12 +174,13 @@ Return a user's avatar as a JPG image.
 
 ## UDP Messages
 
-Documenting all the UDP messages that are sent and received.
+Documenting all the UDP messages that are sent and received. UDP messages are JSON encoded going up and down.
 
 ### Downstream: Player Locations
 
 * device_id - String
-* location - Geohash
+* latitude - Float
+* longitude - Float
 * timestamp - Unix timestamp
 * speed - Int, km/h
 * bearing - Int
@@ -188,7 +189,8 @@ Documenting all the UDP messages that are sent and received.
 ### Downstream: Coin States
 
 * coin_id - String
-* location - Geohash
+* latitude - Float
+* longitude - Float
 * timestamp - Unix timestamp
 * color - red, blue
 * value - Int
@@ -208,7 +210,8 @@ Documenting all the UDP messages that are sent and received.
 ### Upstream: Player Locations
 
 * access_token - String
-* location - Geohash
+* latitude - Float
+* longitude - Float
 * timestamp - Unix timestamp
 * speed - Int, km/h
 * bearing - Int
