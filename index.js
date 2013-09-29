@@ -213,6 +213,9 @@ function processRequest(request, response) {
     } else if (request.url === "/board/state") {
       require('./lib/routes/board_state')(request, response);
 
+    } else if (request.url === "/game/list") {
+      require('./lib/routes/games')(request, response);
+
     } else if (request.url === "/game/create") {
       require('./lib/routes/game_create')(request, response);
 
