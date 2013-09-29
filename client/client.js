@@ -1,16 +1,13 @@
-var dgram   = require('dgram'),
-    geohash = require('cgeohash');
+var dgram   = require('dgram');
 
 var port = 5309;
 var host = '127.0.0.1';
 
 var latitude = 45.5165;
 var longitude = -122.6764;
-var location = geohash.encode(latitude, longitude, 9);
 
 var message = JSON.stringify({ 
   access_token: 'bh3TPA8uQ8gBmtSq4qA1gkst25qOvtYSgOaHisLEuJk6Xqdd',
-  location: location, 
   latitude: latitude,
   longitude: longitude,
   timestamp: Math.floor(+new Date() / 1000),

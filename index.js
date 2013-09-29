@@ -3,8 +3,7 @@ var socket = require('./lib/socket'),
     config = require('./config.json'),
     Redis  = require('redis');
 
-var geohash = require('cgeohash'),
-    qs  = require('querystring');
+var qs  = require('querystring');
 
 var geotrigger = require('./lib/geotrigger-helper');
 var redis = require('./lib/redis');
