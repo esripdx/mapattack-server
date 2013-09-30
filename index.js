@@ -1,4 +1,4 @@
-var socket = require('./lib/socket'),
+var udp = require('./lib/udp'),
     web    = require('./lib/web'),
     config = require('./config.json'),
     Redis  = require('redis'),
@@ -60,7 +60,7 @@ function start_game_listener(game_id, udp_server) {
 if(argv.udp) {
 
 // create the UDP socket and respond
-socket.createSocket(argv.udp, function (err, server) {
+udp.createSocket(argv.udp, function (err, server) {
   debug('udp', "listening on UDP port " + config.udp_port);
   server.on("message", function (msg, rinfo) {
     try {
@@ -256,3 +256,56 @@ function processRequest(request, response) {
       response.end("404 error");
     }
 }
+
+
+/*
+
+
+
+
+*/
+
+if(argv.socketio) {
+  console.log("listening on socket.io port " + argv.socketio);
+  var io = require('socket.io').listen(argv.socketio);
+  io.enable('browser client minification');  // send minified client
+  io.enable('browser client etag');          // apply etag caching logic based on version number
+  io.enable('browser client gzip');          // gzip the file
+
+  io.sockets.on('connection', function (socket) {
+    var redis_sub = Redis.createClient(config.redis_port, config.redis_host);
+
+    // Prompt the client for a game ID
+    socket.emit('game_id');
+
+    // When a game ID is received, subscribe to the corresponding redis channel
+    socket.on('game_id', function(game_id){
+
+      redis_sub.subscribe("game:"+game_id, function(err,data){
+        redis_sub.on("message", function(channel, message){
+          debug('socketio', "game:"+game_id, message);
+          // Send the message from redis to the socket.io client
+          socket.emit('data', message);
+        });
+      });
+
+      // Clean up connections
+      socket.on('disconnect', function(){
+        if(redis_sub) {
+          redis_sub.unsubscribe();
+          redis_sub.end();
+        }
+      });
+      socket.on('end', function(){
+        if(redis_sub) {
+          redis_sub.unsubscribe();
+          redis_sub.end();
+        }
+      });
+
+    });
+
+  });
+
+}
+

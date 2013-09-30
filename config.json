@@ -13,6 +13,7 @@
     "udp": false,
     "board": true,
     "device": false,
-    "trigger": true
+    "trigger": true,
+    "socketio": true
   }
 }
