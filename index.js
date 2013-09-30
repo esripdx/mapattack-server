@@ -125,7 +125,6 @@ socket.createSocket(config.udp_port, function (err, server) {
 
               // Publish this user's location data to the redis channel for the game ID
               session.redis.publish_location(session.device_id, game.game_id, {
-                type: "player",
                 latitude: parseFloat(request.latitude),
                 longitude: parseFloat(request.longitude),
                 timestamp: parseInt(request.timestamp),
