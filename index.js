@@ -13,15 +13,14 @@ var debug = require('./lib/debug');
 var redis_pool = {};
 
 
-
 function start_game_listener(game_id, udp_server) {
   debug('udp', "Starting new game listener for game:"+game_id);
   var redis_sub = Redis.createClient(config.redis_port, config.redis_host);
   redis_sub.subscribe("game:"+game_id, function(err,data){
     redis_sub.on("message", function(channel, message){
       debug('udp', "game:"+game_id, message);
-      // Find all active players of this game
 
+      // Find all active players of this game
       redis.game.get_players(game_id, function(err, teams){
         debug('udp', "Active Players");
         debug('udp', teams);
