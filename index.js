@@ -175,7 +175,7 @@ if(argv.http) {
 
 // create the HTTP server and respond
 web.createWebServer(argv.http, function (err, server) {
-  console.log("listening on TCP port " + config.http_port);
+  console.log("listening on TCP port " + argv.http);
   server.on("request", function (request, response) {
     console.log("http request: " + request.url);
 
