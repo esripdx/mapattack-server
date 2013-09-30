@@ -170,6 +170,7 @@ Documenting all the UDP messages that are sent and received. UDP messages are JS
 
 ### Downstream: Player Locations
 
+* type - "player"
 * device_id - String
 * latitude - Float
 * longitude - Float
@@ -180,11 +181,12 @@ Documenting all the UDP messages that are sent and received. UDP messages are JS
 
 ### Downstream: Coin States
 
+* type - "coin"
 * coin_id - String
 * latitude - Float
 * longitude - Float
 * timestamp - Unix timestamp
-* color - red, blue
+* team - red, blue
 * value - Int
 * device_id - String - who captured the coin
 * player_score - Int - total score for the player who captured this coin
@@ -193,6 +195,7 @@ Documenting all the UDP messages that are sent and received. UDP messages are JS
 
 ### Downstream: Game List
 
+* type - "game"
 * board_id - String
 * red_players - Int
 * blue_players - Int
