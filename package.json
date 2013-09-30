@@ -11,6 +11,7 @@
     "request": "~2.27.0",
     "redis": "~0.8.4",
     "xmlhttprequest": "~1.6.0",
-    "terraformer": "https://github.com/esri/Terraformer/tarball/master"
+    "terraformer": "https://github.com/esri/Terraformer/tarball/master",
+    "optimist": "~0.6.0"
   }
 }

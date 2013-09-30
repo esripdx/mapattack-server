@@ -1,7 +1,8 @@
 var socket = require('./lib/socket'),
     web    = require('./lib/web'),
     config = require('./config.json'),
-    Redis  = require('redis');
+    Redis  = require('redis'),
+    argv   = require('optimist').argv;
 
 var qs  = require('querystring');
 
@@ -56,8 +57,10 @@ function start_game_listener(game_id, udp_server) {
 }
 
 
+if(argv.udp) {
+
 // create the UDP socket and respond
-socket.createSocket(config.udp_port, function (err, server) {
+socket.createSocket(argv.udp, function (err, server) {
   debug('udp', "listening on UDP port " + config.udp_port);
   server.on("message", function (msg, rinfo) {
     try {
@@ -165,10 +168,13 @@ socket.createSocket(config.udp_port, function (err, server) {
   });
 });
 
+}
 
+
+if(argv.http) {
 
 // create the HTTP server and respond
-web.createWebServer(config.http_port, function (err, server) {
+web.createWebServer(argv.http, function (err, server) {
   console.log("listening on TCP port " + config.http_port);
   server.on("request", function (request, response) {
     console.log("http request: " + request.url);
@@ -194,6 +200,8 @@ web.createWebServer(config.http_port, function (err, server) {
     }
   });
 });
+
+}
 
 function processRequest(request, response) {
     if (request.url === "/ping") {
