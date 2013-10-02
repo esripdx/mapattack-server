@@ -85,7 +85,7 @@ udp.createSocket(argv.udp, function (err, server) {
       var locationUpdate = {
         locations: [
           {
-            timestamp: new Date(parseInt(request.timestamp) * 1000),
+            timestamp: parseInt(request.timestamp),
             latitude:  parseFloat(request.latitude),
             longitude: parseFloat(request.longitude),
             accuracy:  parseInt(request.accuracy),
@@ -102,15 +102,40 @@ udp.createSocket(argv.udp, function (err, server) {
           // Update the UDP address/port in redis for this user
           session.set_udp_info(rinfo.address, rinfo.port);
 
-          // Store the location of the player in redis
-          session.redis.device.set_location(session.device_id, {
-            latitude: parseFloat(request.latitude),
-            longitude: parseFloat(request.longitude),
-            timestamp: parseInt(request.timestamp),
-            speed: parseInt(request.speed),
-            bearing: parseInt(request.bearing),
-            accuracy: parseInt(request.accuracy)
-          }, function(err,data){});
+          var previous_location;
+          session.redis.device.get_location(session.device_id, function(err, previous){
+
+            if(previous) {
+              locationUpdate.previous = {
+                timestamp: parseInt(previous.timestamp),
+                latitude:  parseFloat(previous.latitude),
+                longitude: parseFloat(previous.longitude),
+                accuracy:  parseInt(previous.accuracy),
+                speed:     parseInt(previous.speed),
+                bearing:   parseInt(previous.bearing)
+              };
+            }
+
+            // Send location update to the Geotrigger API
+            session.send_location_update(locationUpdate, function (err, res) {
+              if (err) {
+                debug('udp', "ERROR: " + err);
+              } else {
+                debug('udp', res);
+              }
+            });
+
+            // Store the location of the player in redis
+            session.redis.device.set_location(session.device_id, {
+              timestamp: parseInt(request.timestamp),
+              latitude: parseFloat(request.latitude),
+              longitude: parseFloat(request.longitude),
+              speed: parseInt(request.speed),
+              bearing: parseInt(request.bearing),
+              accuracy: parseInt(request.accuracy)
+            }, function(err,data){});
+
+          });
 
           // Find the active game_id for the user
           session.redis.device.get_active_game(session.device_id, function(err, game){
@@ -138,24 +163,6 @@ udp.createSocket(argv.udp, function (err, server) {
             }
           });
 
-          // Send location update to the Geotrigger API
-          session.send_location_update(locationUpdate, function (err, res) {
-            if (err) {
-              debug('udp', "ERROR: " + err);
-            } else {
-              debug('udp', res);
-            }
-          });
-
-          /*
-          server.send(response, 0, response.length, rinfo.port, rinfo.host, function (err, data) {
-            if (err) {
-              console.error("ERROR: " + err);
-            } else {
-              console.log("acknowledgement sent");
-            }
-          });
-          */
         } catch(e) {
           debug('udp', "Error");
           debug('udp', e);
