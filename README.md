@@ -282,6 +282,12 @@ Scores of each device
 * Hash: game:XXXXXX:blue device:XXXXXX => Number
 * HINCRBY game:XXXXXX:red device:XXXXXX 1
 
+Game title and bounding box, copied to Redis when a game is created from a board
+* Value: game:XXXXXX:data => {name, bbox}
+
+Coin data, copied to Redis when a game is created from a board
+* Hash game:XXXXXX:coin_data XXXXXX => {coin_id, latitude, longitude, value}
+
 Which team has claimed a coin
 * Hash game:XXXXXX:coins XXXXXX => red/blue
 
