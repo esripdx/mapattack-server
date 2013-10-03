@@ -137,7 +137,7 @@ udp.createSocket(argv.udp, function (err, server) {
 
           });
 
-          // Find the active game_id for the user
+          // Find the active game_id for the user (also includes device name, team and score)
           session.redis.device.get_active_game(session.device_id, function(err, game){
             if(err) {
               debug('udp', "Couldn't find active game for device: " + device_id);
@@ -152,6 +152,9 @@ udp.createSocket(argv.udp, function (err, server) {
 
               // Publish this user's location data to the redis channel for the game ID
               session.redis.publish_location(session.device_id, game.game_id, {
+                name: game.device_name,
+                team: game.device_team,
+                score: game.device_score,
                 latitude: parseFloat(request.latitude),
                 longitude: parseFloat(request.longitude),
                 timestamp: parseInt(request.timestamp),
@@ -159,7 +162,6 @@ udp.createSocket(argv.udp, function (err, server) {
                 bearing: parseInt(request.bearing),
                 accuracy: parseInt(request.accuracy)
               });
-
             }
           });
 

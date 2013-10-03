@@ -178,6 +178,9 @@ Documenting all the UDP messages that are sent and received. UDP messages are JS
 * speed - Int, km/h
 * bearing - Int
 * accuracy - Int, meters
+* name
+* team
+* score
 
 ### Downstream: Coin States
 
