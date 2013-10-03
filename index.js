@@ -82,13 +82,19 @@ udp.createSocket(argv.udp, function (err, server) {
         return;
       }
 
+      var accuracy = parseInt(request.accuracy);
+      if(accuracy <= 30) {
+        // Force semi-accurate locations to a 5m accuracy to hopefully force the triggers to run
+        accuracy = 5;
+      }
+
       var locationUpdate = {
         locations: [
           {
             timestamp: parseInt(request.timestamp),
             latitude:  parseFloat(request.latitude),
             longitude: parseFloat(request.longitude),
-            accuracy:  parseInt(request.accuracy),
+            accuracy:  accuracy,
             speed:     parseInt(request.speed),
             bearing:   parseInt(request.bearing)
           }
@@ -132,7 +138,7 @@ udp.createSocket(argv.udp, function (err, server) {
               longitude: parseFloat(request.longitude),
               speed: parseInt(request.speed),
               bearing: parseInt(request.bearing),
-              accuracy: parseInt(request.accuracy)
+              accuracy: accuracy
             }, function(err,data){});
 
           });
@@ -160,7 +166,7 @@ udp.createSocket(argv.udp, function (err, server) {
                 timestamp: parseInt(request.timestamp),
                 speed: parseInt(request.speed),
                 bearing: parseInt(request.bearing),
-                accuracy: parseInt(request.accuracy)
+                accuracy: accuracy
               });
             }
           });
