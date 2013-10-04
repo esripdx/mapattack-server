@@ -10,7 +10,7 @@
     "auth": true,
     "locations": false,
     "game": true,
-    "udp": false,
+    "udp": true,
     "board": true,
     "device": false,
     "trigger": true,

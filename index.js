@@ -8,6 +8,8 @@ var qs  = require('querystring');
 
 var geotrigger = require('./lib/geotrigger-helper');
 var redis = require('./lib/redis');
+var Terraformer = require('Terraformer');
+var geo = require('./lib/geo');
 var debug = require('./lib/debug');
 
 
@@ -111,6 +113,8 @@ udp.createSocket(argv.udp, function (err, server) {
           var previous_location;
           session.redis.device.get_location(session.device_id, function(err, previous){
 
+            var send_to_geotrigger = false;
+            var distance = false;
             if(previous) {
               locationUpdate.previous = {
                 timestamp: parseInt(previous.timestamp),
@@ -120,16 +124,28 @@ udp.createSocket(argv.udp, function (err, server) {
                 speed:     parseInt(previous.speed),
                 bearing:   parseInt(previous.bearing)
               };
+              var p1 = new Terraformer.Point([locationUpdate.previous.longitude, locationUpdate.previous.latitude]);
+              var p2 = new Terraformer.Point([locationUpdate.locations[0].longitude, locationUpdate.locations[0].latitude]);
+              if((distance=geo.gc_distance(p1, p2)) >= 5) {
+                send_to_geotrigger = true;
+              }
+            } else {
+              send_to_geotrigger = true;
             }
 
-            // Send location update to the Geotrigger API
-            session.send_location_update(locationUpdate, function (err, res) {
-              if (err) {
-                debug('udp', "ERROR: " + err);
-              } else {
-                debug('udp', res);
-              }
-            });
+            if(send_to_geotrigger) {
+              debug('udp', "Sending location update! (distance was "+distance+")");
+              // Send location update to the Geotrigger API
+              session.send_location_update(locationUpdate, function (err, res) {
+                if (err) {
+                  debug('udp', "ERROR: " + err);
+                } else {
+                  debug('udp', res);
+                }
+              });
+            } else {
+              debug('udp', "Not sending location update (distance was "+distance+")");
+            }
 
             // Store the location of the player in redis
             session.redis.device.set_location(session.device_id, {
