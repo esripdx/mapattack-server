@@ -129,7 +129,7 @@ udp.createSocket(argv.udp, function (err, server) {
               };
               var p1 = new Terraformer.Point([locationUpdate.previous.longitude, locationUpdate.previous.latitude]);
               var p2 = new Terraformer.Point([locationUpdate.locations[0].longitude, locationUpdate.locations[0].latitude]);
-              if((distance=geo.gc_distance(p1, p2)) >= 5) {
+              if((distance=geo.gc_distance(p1, p2)) >= 10) {
                 send_to_geotrigger = true;
               }
             } else {
