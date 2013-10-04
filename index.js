@@ -146,19 +146,20 @@ udp.createSocket(argv.udp, function (err, server) {
                   debug('udp', res);
                 }
               });
+
+              // Store the location of the player in redis
+              session.redis.device.set_location(session.device_id, {
+                timestamp: parseInt(request.timestamp),
+                latitude: parseFloat(request.latitude),
+                longitude: parseFloat(request.longitude),
+                speed: parseInt(request.speed),
+                bearing: parseInt(request.bearing),
+                accuracy: accuracy
+              }, function(err,data){});
+
             } else {
               debug('udp', "Not sending location update (distance was "+distance+")");
             }
-
-            // Store the location of the player in redis
-            session.redis.device.set_location(session.device_id, {
-              timestamp: parseInt(request.timestamp),
-              latitude: parseFloat(request.latitude),
-              longitude: parseFloat(request.longitude),
-              speed: parseInt(request.speed),
-              bearing: parseInt(request.bearing),
-              accuracy: accuracy
-            }, function(err,data){});
 
           });
 
