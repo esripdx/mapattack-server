@@ -104,6 +104,9 @@ udp.createSocket(argv.udp, function (err, server) {
       };
 
       geotrigger.new_session(request.access_token, null, function(session){
+        if(!session) {
+          return;
+        }
         try {
           debug('udp', "server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + request.latitude + "," + request.longitude + "]");
 
