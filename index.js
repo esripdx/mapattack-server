@@ -180,7 +180,7 @@ udp.createSocket(argv.udp, function (err, server) {
               session.redis.publish_location(session.device_id, game.game_id, {
                 name: (game.device_name || session.device_id.substring(0,3)),
                 team: game.device_team,
-                score: (game.device_score || 0),
+                score: (game.device_score | 0),
                 latitude: parseFloat(request.latitude),
                 longitude: parseFloat(request.longitude),
                 timestamp: parseInt(request.timestamp),
