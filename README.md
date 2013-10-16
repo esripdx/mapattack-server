@@ -139,16 +139,37 @@ Retrieve all player and coin locations and state for a game
 
 Response:
 
-* players=[]
-* coins=[]
-
-player:
-* location - Geohash
-* TODO
-
-coin:
-* location - Geohash
-* TODO
+* game - Object
+ * game_id
+ * active - true, false
+ * name
+ * bbox - [x,y,x,y]
+ * creator
+  * device_id
+  * name
+  * team
+* teams - Object
+ * blue
+  * size
+  * score
+ * red
+  * size
+  * score
+* coins - Array
+ * coin_id
+ * latitude
+ * longitude
+ * value
+ * team - null, red, blue
+* players - Array
+ * device_id
+ * team
+ * score
+ * latitude
+ * longitude
+ * timestamp
+ * speed
+ * name
 
 
 ### game/end
@@ -286,7 +307,8 @@ Scores of each device
 * HINCRBY game:XXXXXX:red device:XXXXXX 1
 
 Game title and bounding box, copied to Redis when a game is created from a board
-* Value: game:XXXXXX:data => {name, bbox}
+* Value: game:XXXXXX:data => {name, bbox, creator}
+ * creator => {device_id, name}
 
 Coin data, copied to Redis when a game is created from a board
 * Hash game:XXXXXX:coin_data XXXXXX => {coin_id, latitude, longitude, value}
