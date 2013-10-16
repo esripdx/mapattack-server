@@ -226,6 +226,18 @@ Documenting all the UDP messages that are sent and received. UDP messages are JS
 * red_score - Int
 * blue_score - Int
 
+### Downstream: Game Started
+
+* type - "game_start"
+* game_id - String
+
+### Downstream: Player Joins Game
+
+* type - "player_join"
+* device_id - String
+* name - String
+* team - red, blue
+
 ### Upstream: Player Locations
 
 * access_token - String
