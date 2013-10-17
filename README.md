@@ -231,6 +231,11 @@ Documenting all the UDP messages that are sent and received. UDP messages are JS
 * type - "game_start"
 * game_id - String
 
+### Downstream: Game Finished
+
+* type - "game_end"
+* game_id - String
+
 ### Downstream: Player Joins Game
 
 * type - "player_join"
