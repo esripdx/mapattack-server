@@ -242,6 +242,7 @@ web.createWebServer(argv.http, function (err, server) {
 }
 
 function processRequest(request, response) {
+    var log_request = false;
     if (request.url === "/ping") {
       require('./lib/routes/ping')(request, response);
 
@@ -281,12 +282,14 @@ function processRequest(request, response) {
 
     } else if (request.url === "/game/state") {
       require('./lib/routes/game_state')(request, response);
+      log_request = true;
 
     } else if (request.url === "/game/end") {
       require('./lib/routes/game_end')(request, response);
 
     } else if (request.url === "/trigger/callback") {
       require('./lib/routes/trigger_callback')(request, response);
+      log_request = true;
 
     } else if (match=request.url.match(/\/(user|avatar)\/(.+)\.jpg/)) {
       // Return a user's avatar given their device_id
@@ -301,6 +304,10 @@ function processRequest(request, response) {
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
       response.end("not found");
+    }
+
+    if(log_request) {
+      stats.http_incr(request.url);
     }
 }
 
@@ -340,13 +347,13 @@ if(argv.socketio) {
 
       // Clean up connections
       socket.on('disconnect', function(){
+        stats.socketio_clients_decr();
         if(redis_sub) {
           redis_sub.unsubscribe();
           redis_sub.end();
         }
       });
       socket.on('end', function(){
-        stats.socketio_clients_decr();
         if(redis_sub) {
           redis_sub.unsubscribe();
           redis_sub.end();
