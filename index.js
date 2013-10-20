@@ -321,6 +321,7 @@ if(argv.socketio) {
 
   io.sockets.on('connection', function (socket) {
     var redis_sub = Redis.createClient(config.redis_port, config.redis_host);
+    stats.socketio_clients_incr();
 
     // Prompt the client for a game ID
     socket.emit('game_id');
@@ -333,6 +334,7 @@ if(argv.socketio) {
           debug('socketio', "game:"+game_id, message);
           // Send the message from redis to the socket.io client
           socket.emit('data', message);
+          stats.socketio_out(1);
         });
       });
 
@@ -344,6 +346,7 @@ if(argv.socketio) {
         }
       });
       socket.on('end', function(){
+        stats.socketio_clients_decr();
         if(redis_sub) {
           redis_sub.unsubscribe();
           redis_sub.end();
