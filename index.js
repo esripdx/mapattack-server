@@ -8,6 +8,7 @@ var qs  = require('querystring');
 
 var geotrigger = require('./lib/geotrigger-helper');
 var redis = require('./lib/redis');
+var stats = require('./lib/stats');
 var Terraformer = require('Terraformer');
 var geo = require('./lib/geo');
 var debug = require('./lib/debug');
@@ -41,6 +42,7 @@ function start_game_listener(game_id, udp_server) {
           redis.device.get_udp_info(device_id, function(err, udp_info){
             if(err || udp_info == null){
             } else {
+              stats.udp_out(1);
               udp_server.send(new Buffer(message), 0, message.length, udp_info.port, udp_info.address, function (err, data) {
                 if (err) {
                   debug('udp', "ERROR: " + err);
@@ -109,6 +111,7 @@ udp.createSocket(argv.udp, function (err, server) {
         }
         try {
           debug('udp', "server got: a message from " + rinfo.address + ":" + rinfo.port + " [" + request.latitude + "," + request.longitude + "]");
+          stats.udp_in(1);
 
           // Update the UDP address/port in redis for this user
           session.set_udp_info(rinfo.address, rinfo.port);
@@ -261,6 +264,9 @@ function processRequest(request, response) {
     } else if (request.url === "/board/state") {
       require('./lib/routes/board_state')(request, response);
 
+    // } else if (request.url === "/board/unpublish") {
+    //   require('./lib/routes/board_unpublish')(request, response);
+
     } else if (request.url === "/game/list") {
       require('./lib/routes/games')(request, response);
 
@@ -286,9 +292,15 @@ function processRequest(request, response) {
       // Return a user's avatar given their device_id
       require('./lib/routes/device_avatar')(match[2], request, response);
 
+    } else if (request.url === "/munin/config") {
+      require('./lib/stats.js').munin_config(request, response);
+
+    } else if (request.url === "/munin/stats") {
+      require('./lib/stats.js').munin_stats(request, response);
+
     } else {
       response.writeHead(404, { 'Content-Type': 'text/plain' });
-      response.end("404 error");
+      response.end("not found");
     }
 }
 
