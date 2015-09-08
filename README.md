@@ -67,17 +67,18 @@ Note that this doesn't actually make any API requests or do anything other than 
 
 Response:
 
-* board_id
-* name
-* distance - meters
-* bbox - [x,y,x,y]
-* game:
- * game_id
- * is_active - true, false
- * red_team - number of people on the red team
- * blue_team
- * red_score - total score for the red team
- * blue_score - total score for the blue team
+* boards
+ * board_id
+ * name
+ * distance - meters
+ * bbox - [x,y,x,y]
+ * game:
+  * game_id
+  * is_active - true, false
+  * red_team - number of people on the red team
+  * blue_team
+  * red_score - total score for the red team
+  * blue_score - total score for the blue team
 
 
 ### board/state
